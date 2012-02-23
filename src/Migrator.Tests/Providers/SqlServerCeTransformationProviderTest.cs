@@ -12,9 +12,9 @@
 using System;
 using System.Configuration;
 using System.Data.SqlServerCe;
+using System.IO;
 using Migrator.Providers.SqlServer;
 using NUnit.Framework;
-using System.IO;
 
 namespace Migrator.Tests.Providers
 {
@@ -29,7 +29,7 @@ namespace Migrator.Tests.Providers
             if (constr == null)
                 throw new ArgumentNullException("SqlServerCeConnectionString", "No config file");
 
-			EnsureDatabase(constr);
+            EnsureDatabase(constr);
 
             _provider = new SqlServerCeTransformationProvider(new SqlServerCeDialect(), constr);
             _provider.BeginTransaction();
@@ -48,10 +48,10 @@ namespace Migrator.Tests.Providers
         }
 
         // [Test,Ignore("SqlServerCe doesn't support check constraints")]
-		public override void CanAddCheckConstraint() { }
+        public override void CanAddCheckConstraint() { }
 
-		// [Test,Ignore("SqlServerCe doesn't support table renaming")]
-		// see: http://www.pocketpcdn.com/articles/articles.php?&atb.set(c_id)=74&atb.set(a_id)=8145&atb.perform(details)=&
-		public override void RenameTableThatExists() { }
+        // [Test,Ignore("SqlServerCe doesn't support table renaming")]
+        // see: http://www.pocketpcdn.com/articles/articles.php?&atb.set(c_id)=74&atb.set(a_id)=8145&atb.perform(details)=&
+        public override void RenameTableThatExists() { }
     }
 }
