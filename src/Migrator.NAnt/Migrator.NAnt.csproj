@@ -58,13 +58,13 @@
     <Service Include="{B4F97281-0DBD-4835-9ED8-7DFB966E87FF}" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Migrator.Framework\Migrator.Framework-vs2010.csproj">
+    <ProjectReference Include="..\Migrator.Framework\Migrator.Framework.csproj">
       <Project>{FCFD1AF3-29D8-4C2C-8355-DA008BDB33FD}</Project>
-      <Name>Migrator.Framework-vs2010</Name>
+      <Name>Migrator.Framework</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Migrator\Migrator-vs2010.csproj">
+    <ProjectReference Include="..\Migrator\Migrator.csproj">
       <Project>{1FEE70A4-AAD7-4C60-BE60-3F7DC03A8C4D}</Project>
-      <Name>Migrator-vs2010</Name>
+      <Name>Migrator</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

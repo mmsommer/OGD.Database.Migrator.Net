@@ -107,7 +107,7 @@
     <Compile Include="TypeNames.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Migrator.Framework\Migrator.Framework-vs2010.csproj">
+    <ProjectReference Include="..\Migrator.Framework\Migrator.Framework.csproj">
       <Project>{FCFD1AF3-29D8-4C2C-8355-DA008BDB33FD}</Project>
       <Name>Migrator.Framework-vs2010</Name>
     </ProjectReference>
