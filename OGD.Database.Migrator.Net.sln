@@ -17,19 +17,19 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Extras", "Extras", "{02B014
 		doc\TODO.txt = doc\TODO.txt
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Migrator-vs2010", "src\Migrator\Migrator-vs2010.csproj", "{1FEE70A4-AAD7-4C60-BE60-3F7DC03A8C4D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Migrator", "src\Migrator\Migrator.csproj", "{1FEE70A4-AAD7-4C60-BE60-3F7DC03A8C4D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Migrator.Framework-vs2010", "src\Migrator.Framework\Migrator.Framework-vs2010.csproj", "{FCFD1AF3-29D8-4C2C-8355-DA008BDB33FD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Migrator.Framework", "src\Migrator.Framework\Migrator.Framework.csproj", "{FCFD1AF3-29D8-4C2C-8355-DA008BDB33FD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Migrator.Providers-vs2010", "src\Migrator.Providers\Migrator.Providers-vs2010.csproj", "{C7B6C6CB-B721-42BD-800F-0964E9D67D4C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Migrator.Providers", "src\Migrator.Providers\Migrator.Providers.csproj", "{C7B6C6CB-B721-42BD-800F-0964E9D67D4C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Migrator.Console-vs2010", "src\Migrator.Console\Migrator.Console-vs2010.csproj", "{38CAE7C5-C94A-403E-AC56-2988B7EDE888}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Migrator.Console", "src\Migrator.Console\Migrator.Console.csproj", "{38CAE7C5-C94A-403E-AC56-2988B7EDE888}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Migrator.MSBuild-vs2010", "src\Migrator.MSBuild\Migrator.MSBuild-vs2010.csproj", "{B4CE535C-B0AF-4F4E-B2FD-93780D3D20D7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Migrator.MSBuild", "src\Migrator.MSBuild\Migrator.MSBuild.csproj", "{B4CE535C-B0AF-4F4E-B2FD-93780D3D20D7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Migrator.NAnt-vs2010", "src\Migrator.NAnt\Migrator.NAnt-vs2010.csproj", "{46684D4C-0D2C-4DF7-A931-F9AFDA9D0EC5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Migrator.NAnt", "src\Migrator.NAnt\Migrator.NAnt.csproj", "{46684D4C-0D2C-4DF7-A931-F9AFDA9D0EC5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Migrator.Tests-vs2010", "src\Migrator.Tests\Migrator.Tests-vs2010.csproj", "{277E4C35-6B4C-47E0-9C00-4FB33849BAA5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Migrator.Tests", "src\Migrator.Tests\Migrator.Tests.csproj", "{277E4C35-6B4C-47E0-9C00-4FB33849BAA5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
