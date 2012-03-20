@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using Migrator.Framework;
 
 namespace Migrator.Providers
@@ -48,6 +49,29 @@ namespace Migrator.Providers
             new Dictionary<DbType, SortedList<int, string>>();
 
         private readonly Dictionary<DbType, string> defaults = new Dictionary<DbType, string>();
+
+        /// <summary>
+        /// Get <see cref="DbType"/> for the given database type
+        /// </summary>
+        /// <param name="databaseType">The database type</param>
+        /// <returns></returns>
+        public DbType Get(string databaseType)
+        {
+            if (defaults.Count(x => x.Value == databaseType) > 0)
+            {
+                return defaults
+                    .First(x => x
+                        .Value
+                        .Split('(')[0]
+                        .Equals(databaseType, StringComparison.InvariantCultureIgnoreCase)
+                    )
+                    .Key;
+            }
+            else
+            {
+                throw new ArgumentException("Dialect does not support database type " + databaseType, "databaseType");
+            }
+        }
 
         /// <summary>
         /// Get default type name for specified type
