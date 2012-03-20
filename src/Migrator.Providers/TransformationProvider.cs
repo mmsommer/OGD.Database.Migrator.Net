@@ -81,7 +81,7 @@ namespace Migrator.Providers
             using (
                 IDataReader reader =
                     ExecuteQuery(
-                        String.Format("select COLUMN_NAME, IS_NULLABLE, DATA_TYPE from information_schema.columns where table_name = '{0}'", table)))
+                        String.Format("select COLUMN_NAME, IS_NULLABLE, DATA_TYPE, CHARACTER_MAXIMUM_LENGTH from information_schema.columns where table_name = '{0}'", table)))
             {
                 while (reader.Read())
                 {
@@ -89,6 +89,12 @@ namespace Migrator.Providers
                     string nullableStr = reader.GetString(1);
                     bool isNullable = nullableStr == "YES";
                     column.ColumnProperty |= isNullable ? ColumnProperty.Null : ColumnProperty.NotNull;
+
+                    int? size = reader.GetValue(3).Equals(DBNull.Value) ? null : (int?)reader.GetInt32(3);
+                    if (size.HasValue)
+                    {
+                        column.Size = size.Value;
+                    }
 
                     columns.Add(column);
                 }
