@@ -175,7 +175,14 @@ namespace Migrator.Providers
 
         public virtual string Default(object defaultValue)
         {
-            return String.Format("DEFAULT {0}", defaultValue);
+            if (defaultValue is string)
+            {
+                return String.Format("DEFAULT '{0}'", defaultValue);
+            }
+            else
+            {
+                return String.Format("DEFAULT {0}", defaultValue);
+            }
         }
 
         public ColumnPropertiesMapper GetAndMapColumnProperties(Column column)
