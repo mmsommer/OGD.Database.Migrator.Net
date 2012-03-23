@@ -11,7 +11,7 @@ namespace Migrator.Providers
     public class ColumnPropertiesMapper
     {
         protected Dialect dialect;
-        
+
         /// <summary>The SQL type</summary>
         protected string type;
 
@@ -52,12 +52,12 @@ namespace Migrator.Providers
             get { return name; }
             set { name = value; }
         }
-        
+
         public object Default
         {
-             get { return defaultVal; }
-             set { defaultVal = value; }
-         }
+            get { return defaultVal; }
+            set { defaultVal = value; }
+        }
 
         public string QuotedName
         {
@@ -78,24 +78,30 @@ namespace Migrator.Providers
         {
             Name = column.Name;
             indexed = PropertySelected(column.ColumnProperty, ColumnProperty.Indexed);
-            
+
             List<string> vals = new List<string>();
             vals.Add(dialect.ColumnNameNeedsQuote ? QuotedName : Name);
-            
+
             vals.Add(type);
-            
-            if (! dialect.IdentityNeedsType)
+
+            if (!dialect.IdentityNeedsType)
                 AddValueIfSelected(column, ColumnProperty.Identity, vals);
-                
+
             AddValueIfSelected(column, ColumnProperty.Unsigned, vals);
-            if (! PropertySelected(column.ColumnProperty, ColumnProperty.PrimaryKey) || dialect.NeedsNotNullForIdentity)
+            if (!PropertySelected(column.ColumnProperty, ColumnProperty.PrimaryKey) || dialect.NeedsNotNullForIdentity)
+            {
                 AddValueIfSelected(column, ColumnProperty.NotNull, vals);
-                
+            }
+            else
+            {
+                AddValueIfSelected(column, ColumnProperty.Null, vals);
+            }
+
             AddValueIfSelected(column, ColumnProperty.PrimaryKey, vals);
-            
+
             if (dialect.IdentityNeedsType)
                 AddValueIfSelected(column, ColumnProperty.Identity, vals);
-            
+
             AddValueIfSelected(column, ColumnProperty.Unique, vals);
             AddValueIfSelected(column, ColumnProperty.ForeignKey, vals);
 
