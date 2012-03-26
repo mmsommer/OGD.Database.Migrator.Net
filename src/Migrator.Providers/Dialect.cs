@@ -175,7 +175,7 @@ namespace Migrator.Providers
 
         public virtual string Default(object defaultValue)
         {
-            if (defaultValue is string)
+            if (defaultValue is string || defaultValue is DateTime)
             {
                 return String.Format("DEFAULT '{0}'", defaultValue);
             }
