@@ -859,6 +859,28 @@ namespace Migrator.Providers
             return String.Join(seperator, namesAndValues);
         }
 
+        public int Insert(string table, string[] columns, string[][] rows)
+        {
+            return Map(table, columns, rows, this.Insert);
+        }
+
+        public int Delete(string table, string[] columns, string[][] rows)
+        {
+            return Map(table, columns, rows, this.Delete);
+        }
+
+        private int Map(string table, string[] columns, string[][] rows, Func<string, string[], string[], int> func)
+        {
+            var rowsAffected = 0;
+
+            foreach (var values in rows)
+            {
+                rowsAffected += func(table, columns, values);
+            }
+
+            return rowsAffected;
+        }
+
         public void Dispose()
         {
             if (_connection != null && _connection.State == ConnectionState.Open)

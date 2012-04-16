@@ -1,25 +1,25 @@
 using System;
-using System.Data;
 using System.Collections.Generic;
+using System.Data;
 
 namespace Migrator.Framework
-{   
+{
     /// <summary>
     /// The main interface to use in Migrations to make changes on a database schema.
     /// </summary>
     public interface ITransformationProvider : IDisposable
     {
-        
+
         /// <summary>
         /// Get this provider or a NoOp provider if you are not running in the context of 'provider'.
         /// </summary>
-        ITransformationProvider this[string provider] { get;}
-        
+        ITransformationProvider this[string provider] { get; }
+
         /// <summary>
         /// The list of Migrations currently applied to the database.
         /// </summary>
         List<long> AppliedMigrations { get; }
-        
+
         ILogger Logger { get; set; }
 
         /// <summary>
@@ -32,7 +32,7 @@ namespace Migrator.Framework
         /// <param name="property">Properties that can be ORed together</param>
         /// <param name="defaultValue">The default value of the column if no value is given in a query</param>
         void AddColumn(string table, string column, DbType type, int size, ColumnProperty property, object defaultValue);
-        
+
         /// <summary>
         /// Add a column to an existing table
         /// </summary>
@@ -40,7 +40,7 @@ namespace Migrator.Framework
         /// <param name="column">The name of the new column</param>
         /// <param name="type">The data type for the new columnd</param>
         void AddColumn(string table, string column, DbType type);
-        
+
         /// <summary>
         /// Add a column to an existing table
         /// </summary>
@@ -49,7 +49,7 @@ namespace Migrator.Framework
         /// <param name="type">The data type for the new columnd</param>
         /// <param name="size">The precision or size of the column</param>
         void AddColumn(string table, string column, DbType type, int size);
-        
+
         /// <summary>
         /// Add a column to an existing table
         /// </summary>
@@ -59,7 +59,7 @@ namespace Migrator.Framework
         /// <param name="size">The precision or size of the column</param>
         /// <param name="property">Properties that can be ORed together</param>
         void AddColumn(string table, string column, DbType type, int size, ColumnProperty property);
-        
+
         /// <summary>
         /// Add a column to an existing table
         /// </summary>
@@ -209,7 +209,7 @@ namespace Migrator.Framework
         /// <param name="table">The name of the table that will get the constraint</param>
         /// <param name="columns">The name of the column or columns that will get the constraint.</param>
         void AddUniqueConstraint(string name, string table, params string[] columns);
-        
+
         /// <summary>
         /// Add a constraint to a table
         /// </summary>
@@ -217,7 +217,7 @@ namespace Migrator.Framework
         /// <param name="table">The name of the table that will get the constraint</param>
         /// <param name="checkSql">The check constraint definition.</param>
         void AddCheckConstraint(string name, string table, string checkSql);
-        
+
         /// <summary>
         /// Add a table
         /// </summary>
@@ -244,7 +244,7 @@ namespace Migrator.Framework
         /// <param name="table">The name of the table that will get the new column</param>
         /// <param name="column">An instance of a <see cref="Column">Column</see> with the specified properties and the name of an existing column</param>
         void ChangeColumn(string table, Column column);
-        
+
         /// <summary>
         /// Check to see if a column exists
         /// </summary>
@@ -257,7 +257,7 @@ namespace Migrator.Framework
         /// Commit the running transction
         /// </summary>
         void Commit();
-        
+
         /// <summary>
         /// Check to see if a constraint exists
         /// </summary>
@@ -265,7 +265,7 @@ namespace Migrator.Framework
         /// <param name="table">The table that the constraint lives on.</param>
         /// <returns></returns>
         bool ConstraintExists(string table, string name);
-        
+
         /// <summary>
         /// Check to see if a primary key constraint exists on the table
         /// </summary>
@@ -273,7 +273,7 @@ namespace Migrator.Framework
         /// <param name="table">The table that the constraint lives on.</param>
         /// <returns></returns>
         bool PrimaryKeyExists(string table, string name);
-        
+
         /// <summary>
         /// Execute an arbitrary SQL query
         /// </summary>
@@ -294,14 +294,14 @@ namespace Migrator.Framework
         /// <param name="sql">The SQL to execute.</param>
         /// <returns>A single value that is returned.</returns>
         object ExecuteScalar(string sql);
-        
+
         /// <summary>
         /// Get the information about the columns in a table
         /// </summary>
         /// <param name="table">The table name that you want the columns for.</param>
         /// <returns></returns>
         Column[] GetColumns(string table);
-        
+
         /// <summary>
         /// Get information about a single column in a table
         /// </summary>
@@ -309,13 +309,13 @@ namespace Migrator.Framework
         /// <param name="column">The column name for which you want information.</param>
         /// <returns></returns>
         Column GetColumnByName(string table, string column);
-        
+
         /// <summary>
         /// Get the names of all of the tables
         /// </summary>
         /// <returns>The names of all the tables.</returns>
         string[] GetTables();
-        
+
         /// <summary>
         /// Insert data into a table
         /// </summary>
@@ -326,6 +326,15 @@ namespace Migrator.Framework
         int Insert(string table, string[] columns, string[] values);
 
         /// <summary>
+        /// Inseret data into a table with multiple rows
+        /// </summary>
+        /// <param name="table">The table that will get the new data</param>
+        /// <param name="columns">The names of the columns</param>
+        /// <param name="rows">The rows with values in the same order as the columns</param>
+        /// <returns></returns>
+        int Insert(string table, string[] columns, string[][] rows);
+
+        /// <summary>
         /// Delete data from a table
         /// </summary>
         /// <param name="table">The table that will have the data deleted</param>
@@ -333,6 +342,15 @@ namespace Migrator.Framework
         /// <param name="values">The values in the same order as the columns</param>
         /// <returns></returns>
         int Delete(string table, string[] columns, string[] values);
+
+        /// <summary>
+        /// Delete data from a table with multiple rows
+        /// </summary>
+        /// <param name="table">The table that will have the data deleted</param>
+        /// <param name="columns">The names of the columns used in a where clause</param>
+        /// <param name="rows">The rows with values in the same order as the columns</param>
+        /// <returns></returns>
+        int Delete(string table, string[] columns, string[][] rows);
 
         /// <summary>
         /// Delete data from a table
@@ -348,13 +366,13 @@ namespace Migrator.Framework
         /// </summary>
         /// <param name="version">The version number of the migration that was applied</param>
         void MigrationApplied(long version);
-        
+
         /// <summary>
         /// Marks a Migration version number as having been rolled back from the database
         /// </summary>
         /// <param name="version">The version number of the migration that was removed</param>
         void MigrationUnApplied(long version);
-        
+
         /// <summary>
         /// Remove an existing column from a table
         /// </summary>
@@ -375,20 +393,20 @@ namespace Migrator.Framework
         /// <param name="table">The table that contains the foreign key.</param>
         /// <param name="name">The name of the constraint to remove</param>
         void RemoveConstraint(string table, string name);
-        
+
         /// <summary>
         /// Remove an existing table
         /// </summary>
         /// <param name="tableName">The name of the table</param>
         void RemoveTable(string tableName);
-        
+
         /// <summary>
         /// Rename an existing table
         /// </summary>
         /// <param name="oldName">The old name of the table</param>
         /// <param name="newName">The new name of the table</param>
         void RenameTable(string oldName, string newName);
-        
+
         /// <summary>
         /// Rename an existing table
         /// </summary>
@@ -396,12 +414,12 @@ namespace Migrator.Framework
         /// <param name="oldColumnName">The old name of the column</param>
         /// <param name="newColumnName">The new name of the column</param>
         void RenameColumn(string tableName, string oldColumnName, string newColumnName);
-        
+
         /// <summary>
         /// Rollback the currently running transaction.
         /// </summary>
         void Rollback();
-        
+
         /// <summary>
         /// Get values from a table
         /// </summary>
@@ -418,7 +436,7 @@ namespace Migrator.Framework
         /// <param name="from">The table to select from</param>
         /// <returns></returns>
         IDataReader Select(string what, string from);
-     
+
         /// <summary>
         /// Get a single value from a table
         /// </summary>
@@ -435,14 +453,14 @@ namespace Migrator.Framework
         /// <param name="from">The table to select from</param>
         /// <returns></returns>
         object SelectScalar(string what, string from);
-        
+
         /// <summary>
         /// Check if a table already exists
         /// </summary>
         /// <param name="tableName">The name of the table that you want to check on.</param>
         /// <returns></returns>
         bool TableExists(string tableName);
-        
+
         /// <summary>
         /// Update the values in a table
         /// </summary>
@@ -451,7 +469,7 @@ namespace Migrator.Framework
         /// <param name="columnValues">The values for the columns in the same order as the names.</param>
         /// <returns></returns>
         int Update(string table, string[] columns, string[] columnValues);
-        
+
         /// <summary>
         /// Update the values in a table
         /// </summary>
@@ -461,7 +479,7 @@ namespace Migrator.Framework
         /// <param name="where">A where clause to limit the update</param>
         /// <returns></returns>
         int Update(string table, string[] columns, string[] values, string where);
-        
+
         IDbCommand GetCommand();
 
         void ExecuteSchemaBuilder(SchemaBuilder.SchemaBuilder schemaBuilder);
