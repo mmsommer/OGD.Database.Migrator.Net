@@ -55,7 +55,7 @@ namespace Migrator.Providers
         public ColumnPropertiesMapper GetColumnMapper(Column column)
         {
             string type = column.Size > 0 ? GetTypeName(column.Type, column.Size) : GetTypeName(column.Type);
-            if (!IdentityNeedsType && column.IsIdentity)
+            if(!IdentityNeedsType && column.IsIdentity)
                 type = String.Empty;
 
             return new ColumnPropertiesMapper(this, type);
@@ -69,7 +69,7 @@ namespace Migrator.Providers
         public virtual string GetTypeName(DbType type)
         {
             string result = typeNames.Get(type);
-            if (result == null)
+            if(result == null)
             {
                 throw new Exception(string.Format("No default type mapping for DbType {0}", type));
             }
@@ -99,7 +99,7 @@ namespace Migrator.Providers
         public virtual string GetTypeName(DbType type, int length, int precision, int scale)
         {
             string resultWithLength = typeNames.Get(type, length, precision, scale);
-            if (resultWithLength != null)
+            if(resultWithLength != null)
                 return resultWithLength;
 
             return GetTypeName(type);
@@ -117,7 +117,7 @@ namespace Migrator.Providers
 
         public void RegisterProperty(ColumnProperty property, string sql)
         {
-            if (!propertyMap.ContainsKey(property))
+            if(!propertyMap.ContainsKey(property))
             {
                 propertyMap.Add(property, sql);
             }
@@ -126,7 +126,7 @@ namespace Migrator.Providers
 
         public string SqlForProperty(ColumnProperty property)
         {
-            if (propertyMap.ContainsKey(property))
+            if(propertyMap.ContainsKey(property))
             {
                 return propertyMap[property];
             }
@@ -175,7 +175,7 @@ namespace Migrator.Providers
 
         public virtual string Default(object defaultValue)
         {
-            if (defaultValue is string || defaultValue is DateTime)
+            if(defaultValue is string || defaultValue is DateTime)
             {
                 return String.Format("DEFAULT '{0}'", defaultValue);
             }
@@ -189,9 +189,11 @@ namespace Migrator.Providers
         {
             ColumnPropertiesMapper mapper = GetColumnMapper(column);
             mapper.MapColumnProperties(column);
-            if (column.DefaultValue != null)
+            if(column.DefaultValue != null)
                 mapper.Default = column.DefaultValue;
             return mapper;
         }
+
+        public abstract string AddCollation(string collation);
     }
 }

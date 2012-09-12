@@ -5,11 +5,11 @@ using Migrator.Framework;
 
 namespace Migrator.Providers.SQLite
 {
-	public class SQLiteDialect : Dialect
-	{
-	    public SQLiteDialect()
-	    {
-	        RegisterColumnType(DbType.Binary, "BLOB");
+    public class SQLiteDialect : Dialect
+    {
+        public SQLiteDialect()
+        {
+            RegisterColumnType(DbType.Binary, "BLOB");
             RegisterColumnType(DbType.Byte, "INTEGER");
             RegisterColumnType(DbType.Int16, "INTEGER");
             RegisterColumnType(DbType.Int32, "INTEGER");
@@ -30,15 +30,20 @@ namespace Migrator.Providers.SQLite
             RegisterColumnType(DbType.Time, "DATETIME");
             RegisterColumnType(DbType.Boolean, "INTEGER");
             RegisterColumnType(DbType.Guid, "UNIQUEIDENTIFIER");
-            
+
             RegisterProperty(ColumnProperty.Identity, "AUTOINCREMENT");
         }
 
         public override Type TransformationProvider { get { return typeof(SQLiteTransformationProvider); } }
-        
+
         public override bool NeedsNotNullForIdentity
         {
             get { return false; }
+        }
+
+        public override string AddCollation(string collation)
+        {
+            return string.Format("COLLATE {0}", collation);
         }
     }
 }

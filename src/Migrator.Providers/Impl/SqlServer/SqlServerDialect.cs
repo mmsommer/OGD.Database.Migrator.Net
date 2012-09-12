@@ -5,11 +5,11 @@ using Migrator.Framework;
 
 namespace Migrator.Providers.SqlServer
 {
-	public class SqlServerDialect : Dialect
-	{
-	    public SqlServerDialect()
-	    {
-	        RegisterColumnType(DbType.AnsiStringFixedLength, "CHAR(255)");
+    public class SqlServerDialect : Dialect
+    {
+        public SqlServerDialect()
+        {
+            RegisterColumnType(DbType.AnsiStringFixedLength, "CHAR(255)");
             RegisterColumnType(DbType.AnsiStringFixedLength, 8000, "CHAR($l)");
             RegisterColumnType(DbType.AnsiString, "VARCHAR(255)");
             RegisterColumnType(DbType.AnsiString, 8000, "VARCHAR($l)");
@@ -36,8 +36,8 @@ namespace Migrator.Providers.SqlServer
             RegisterColumnType(DbType.String, 4000, "NVARCHAR($l)");
             RegisterColumnType(DbType.String, 1073741823, "NTEXT");
             RegisterColumnType(DbType.Time, "DATETIME");
-             
-	        RegisterProperty(ColumnProperty.Identity, "IDENTITY");
+
+            RegisterProperty(ColumnProperty.Identity, "IDENTITY");
         }
 
         public override Type TransformationProvider { get { return typeof(SqlServerTransformationProvider); } }
@@ -59,11 +59,16 @@ namespace Migrator.Providers.SqlServer
 
         public override string Default(object defaultValue)
         {
-            if (defaultValue.GetType().Equals(typeof (bool)))
+            if(defaultValue.GetType().Equals(typeof(bool)))
             {
-                defaultValue = ((bool) defaultValue) ? 1 : 0;
+                defaultValue = ((bool)defaultValue) ? 1 : 0;
             }
             return String.Format("DEFAULT {0}", defaultValue);
+        }
+
+        public override string AddCollation(string collation)
+        {
+            return string.Format("COLLATE {0}", collation);
         }
     }
 }

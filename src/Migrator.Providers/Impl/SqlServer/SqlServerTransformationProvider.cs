@@ -41,7 +41,7 @@ namespace Migrator.Providers.SqlServer
         // so that it would be usable by all the SQL Server implementations
         public override bool ConstraintExists(string table, string name)
         {
-            using (IDataReader reader =
+            using(IDataReader reader =
                 ExecuteQuery(string.Format("SELECT TOP 1 * FROM sysobjects WHERE id = object_id('{0}')", name)))
             {
                 return reader.Read();
@@ -55,10 +55,10 @@ namespace Migrator.Providers.SqlServer
 
         public override bool ColumnExists(string table, string column)
         {
-            if (!TableExists(table))
+            if(!TableExists(table))
                 return false;
 
-            using (IDataReader reader =
+            using(IDataReader reader =
                 ExecuteQuery(String.Format("SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME='{0}' AND COLUMN_NAME='{1}'", table, column)))
             {
                 return reader.Read();
@@ -70,7 +70,7 @@ namespace Migrator.Providers.SqlServer
             string tableWithoutBrackets = this.RemoveBrackets(table);
             string schemaName = GetSchemaName(tableWithoutBrackets);
             string tableName = this.GetTableName(tableWithoutBrackets);
-            using (IDataReader reader =
+            using(IDataReader reader =
                 ExecuteQuery(String.Format("SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA ='{0}' AND TABLE_NAME='{1}'", schemaName, tableName)))
             {
                 return reader.Read();
@@ -108,19 +108,19 @@ namespace Migrator.Providers.SqlServer
 
         public override void RenameColumn(string tableName, string oldColumnName, string newColumnName)
         {
-            if (ColumnExists(tableName, newColumnName))
+            if(ColumnExists(tableName, newColumnName))
                 throw new MigrationException(String.Format("Table '{0}' has column named '{1}' already", tableName, newColumnName));
 
-            if (ColumnExists(tableName, oldColumnName))
+            if(ColumnExists(tableName, oldColumnName))
                 ExecuteNonQuery(String.Format("EXEC sp_rename '{0}.{1}', '{2}', 'COLUMN'", tableName, oldColumnName, newColumnName));
         }
 
         public override void RenameTable(string oldName, string newName)
         {
-            if (TableExists(newName))
+            if(TableExists(newName))
                 throw new MigrationException(String.Format("Table with name '{0}' already exists", newName));
 
-            if (TableExists(oldName))
+            if(TableExists(oldName))
                 ExecuteNonQuery(String.Format("EXEC sp_rename {0}, {1}", oldName, newName));
         }
 
@@ -130,15 +130,15 @@ namespace Migrator.Providers.SqlServer
         {
             string sqlContrainte = FindConstraints(table, column);
             List<string> constraints = new List<string>();
-            using (IDataReader reader = ExecuteQuery(sqlContrainte))
+            using(IDataReader reader = ExecuteQuery(sqlContrainte))
             {
-                while (reader.Read())
+                while(reader.Read())
                 {
                     constraints.Add(reader.GetString(0));
                 }
             }
             // Can't share the connection so two phase modif
-            foreach (string constraint in constraints)
+            foreach(string constraint in constraints)
             {
                 RemoveForeignKey(table, constraint);
             }

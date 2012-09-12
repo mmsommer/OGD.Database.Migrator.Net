@@ -25,16 +25,24 @@ namespace Migrator.Framework
         private int _size;
         private ColumnProperty _property;
         private object _defaultValue;
+        private string _collation;
 
-		public Column(string name)
-		{
-			Name = name;
-		}
+        public Column(string name)
+        {
+            Name = name;
+        }
 
-    	public Column(string name, DbType type)
+        public Column(string name, DbType type)
         {
             Name = name;
             Type = type;
+        }
+
+        public Column(string name, DbType type, string collation)
+        {
+            Name = name;
+            Type = type;
+            Collation = collation;
         }
 
         public Column(string name, DbType type, int size)
@@ -44,18 +52,42 @@ namespace Migrator.Framework
             Size = size;
         }
 
-		public Column(string name, DbType type, object defaultValue)
-		{
-			Name = name;
-			Type = type;
-			DefaultValue = defaultValue;
-		}
+        public Column(string name, DbType type, int size, string collation)
+        {
+            Name = name;
+            Type = type;
+            Size = size;
+            Collation = collation;
+        }
 
-    	public Column(string name, DbType type, ColumnProperty property)
+        public Column(string name, DbType type, object defaultValue)
+        {
+            Name = name;
+            Type = type;
+            DefaultValue = defaultValue;
+        }
+
+        public Column(string name, DbType type, string collation, object defaultValue)
+        {
+            Name = name;
+            Type = type;
+            DefaultValue = defaultValue;
+            Collation = collation;
+        }
+
+        public Column(string name, DbType type, ColumnProperty property)
         {
             Name = name;
             Type = type;
             ColumnProperty = property;
+        }
+
+        public Column(string name, DbType type, ColumnProperty property, string collation)
+        {
+            Name = name;
+            Type = type;
+            ColumnProperty = property;
+            Collation = collation;
         }
 
         public Column(string name, DbType type, int size, ColumnProperty property)
@@ -64,6 +96,15 @@ namespace Migrator.Framework
             Type = type;
             Size = size;
             ColumnProperty = property;
+        }
+
+        public Column(string name, DbType type, int size, ColumnProperty property, string collation)
+        {
+            Name = name;
+            Type = type;
+            Size = size;
+            ColumnProperty = property;
+            Collation = collation;
         }
 
         public Column(string name, DbType type, int size, ColumnProperty property, object defaultValue)
@@ -75,12 +116,31 @@ namespace Migrator.Framework
             DefaultValue = defaultValue;
         }
 
+        public Column(string name, DbType type, int size, ColumnProperty property, string collation, object defaultValue)
+        {
+            Name = name;
+            Type = type;
+            Size = size;
+            ColumnProperty = property;
+            DefaultValue = defaultValue;
+            Collation = collation;
+        }
+
         public Column(string name, DbType type, ColumnProperty property, object defaultValue)
         {
             Name = name;
             Type = type;
             ColumnProperty = property;
             DefaultValue = defaultValue;
+        }
+
+        public Column(string name, DbType type, ColumnProperty property, string collation, object defaultValue)
+        {
+            Name = name;
+            Type = type;
+            ColumnProperty = property;
+            DefaultValue = defaultValue;
+            Collation = collation;
         }
 
         public string Name
@@ -112,13 +172,19 @@ namespace Migrator.Framework
             get { return _defaultValue; }
             set { _defaultValue = value; }
         }
-        
-        public bool IsIdentity 
+
+        public string Collation
+        {
+            get { return _collation; }
+            set { _collation = value; }
+        }
+
+        public bool IsIdentity
         {
             get { return (ColumnProperty & ColumnProperty.Identity) == ColumnProperty.Identity; }
         }
-        
-        public bool IsPrimaryKey 
+
+        public bool IsPrimaryKey
         {
             get { return (ColumnProperty & ColumnProperty.PrimaryKey) == ColumnProperty.PrimaryKey; }
         }

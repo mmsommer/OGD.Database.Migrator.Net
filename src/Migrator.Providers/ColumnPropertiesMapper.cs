@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Data;
+using System.Linq;
 using Migrator.Framework;
 
 namespace Migrator.Providers
@@ -32,6 +34,8 @@ namespace Migrator.Providers
         /// Sql if this column has a default value
         /// </summary>
         protected object defaultVal;
+
+        protected string collation;
 
         public ColumnPropertiesMapper(Dialect dialect, string type)
         {
@@ -68,7 +72,7 @@ namespace Migrator.Providers
         {
             get
             {
-                if (dialect.SupportsIndex && indexed)
+                if(dialect.SupportsIndex && indexed)
                     return String.Format("INDEX({0})", dialect.Quote(name));
                 return null;
             }
@@ -84,11 +88,19 @@ namespace Migrator.Providers
 
             vals.Add(type);
 
-            if (!dialect.IdentityNeedsType)
+            if(!string.IsNullOrEmpty(column.Collation))
+            {
+                if(new DbType[] { DbType.String, DbType.StringFixedLength, DbType.AnsiString, DbType.AnsiStringFixedLength }.Contains(column.Type))
+                {
+                    vals.Add(dialect.AddCollation(column.Collation));
+                }
+            }
+
+            if(!dialect.IdentityNeedsType)
                 AddValueIfSelected(column, ColumnProperty.Identity, vals);
 
             AddValueIfSelected(column, ColumnProperty.Unsigned, vals);
-            if (!PropertySelected(column.ColumnProperty, ColumnProperty.PrimaryKey) || dialect.NeedsNotNullForIdentity)
+            if(!PropertySelected(column.ColumnProperty, ColumnProperty.PrimaryKey) || dialect.NeedsNotNullForIdentity)
             {
                 AddValueIfSelected(column, ColumnProperty.NotNull, vals);
             }
@@ -99,13 +111,13 @@ namespace Migrator.Providers
 
             AddValueIfSelected(column, ColumnProperty.PrimaryKey, vals);
 
-            if (dialect.IdentityNeedsType)
+            if(dialect.IdentityNeedsType)
                 AddValueIfSelected(column, ColumnProperty.Identity, vals);
 
             AddValueIfSelected(column, ColumnProperty.Unique, vals);
             AddValueIfSelected(column, ColumnProperty.ForeignKey, vals);
 
-            if (column.DefaultValue != null)
+            if(column.DefaultValue != null)
                 vals.Add(dialect.Default(column.DefaultValue));
 
             columnSql = String.Join(" ", vals.ToArray());
@@ -113,7 +125,7 @@ namespace Migrator.Providers
 
         private void AddValueIfSelected(Column column, ColumnProperty property, ICollection<string> vals)
         {
-            if (PropertySelected(column.ColumnProperty, property))
+            if(PropertySelected(column.ColumnProperty, property))
                 vals.Add(dialect.SqlForProperty(property));
         }
 
